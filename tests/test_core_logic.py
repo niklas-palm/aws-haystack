@@ -1,11 +1,12 @@
 """Tests for core Haystack functionality."""
 
-import pytest
 from unittest.mock import MagicMock, patch
 
+import pytest
+
 from haystack.aws_client import AWSClient
-from haystack.stack_finder import StackFinder
 from haystack.config import HaystackConfig
+from haystack.stack_finder import StackFinder
 
 
 class TestRoleSelection:
