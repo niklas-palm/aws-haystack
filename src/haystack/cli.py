@@ -1,5 +1,7 @@
 """Main CLI interface for Haystack."""
 
+from typing import Optional
+
 import click
 from rich.console import Console
 from rich.table import Table
@@ -24,10 +26,10 @@ console = Console()
 )
 @click.pass_context
 def main(
-    ctx,
-    search_term: str = None,
-    region: str = None,
-    sso_start_url: str = None,
+    ctx: click.Context,
+    search_term: Optional[str] = None,
+    region: Optional[str] = None,
+    sso_start_url: Optional[str] = None,
     sso_region: str = "us-east-1",
     verbose: bool = False,
     clear: bool = False,

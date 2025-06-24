@@ -3,7 +3,7 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from typing import Dict, List, Optional
 
-from botocore.exceptions import ClientError
+from botocore.exceptions import ClientError  # type: ignore
 from rich.console import Console
 from rich.progress import (
     BarColumn,

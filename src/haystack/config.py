@@ -9,7 +9,7 @@ from typing import Any, Dict, Optional
 class HaystackConfig:
     """Manages Haystack configuration and caching."""
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.config_dir = Path.home() / ".haystack"
         self.config_file = self.config_dir / "config.json"
         self.cache_dir = self.config_dir / "cache"
@@ -25,7 +25,8 @@ class HaystackConfig:
         if self.config_file.exists():
             try:
                 with open(self.config_file, "r") as f:
-                    return json.load(f)
+                    config_data = json.load(f)
+                    return config_data if isinstance(config_data, dict) else {}
             except Exception:
                 pass
         return {}
@@ -40,7 +41,13 @@ class HaystackConfig:
 
     def get_sso_config(self) -> Optional[Dict[str, str]]:
         """Get saved SSO configuration."""
-        return self._config.get("sso")
+        sso_config = self._config.get("sso")
+        if sso_config is None or not isinstance(sso_config, dict):
+            return None
+        # Ensure all values are strings
+        if all(isinstance(v, str) for v in sso_config.values()):
+            return Dict[str, str](sso_config)
+        return None
 
     def set_sso_config(self, start_url: str, region: str = "us-east-1") -> None:
         """Save SSO configuration."""

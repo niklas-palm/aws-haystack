@@ -5,10 +5,10 @@ import os
 import time
 import webbrowser
 from concurrent.futures import ThreadPoolExecutor, as_completed
-from typing import Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple
 
-import boto3
-from botocore.exceptions import ClientError, NoCredentialsError
+import boto3  # type: ignore
+from botocore.exceptions import ClientError, NoCredentialsError  # type: ignore
 from rich.console import Console
 from rich.progress import (
     BarColumn,
@@ -35,7 +35,7 @@ class AWSClient:
     ):
         self.verbose = verbose
         self.access_token = None
-        self.token_expires_at = None
+        self.token_expires_at: Optional[Any] = None
         self.client_name = "haystack-cli"
         self.config = HaystackConfig()
 
@@ -428,8 +428,10 @@ class AWSClient:
                     )
                 return []
 
+        return []
+
     def get_cloudformation_client(
-        self, account_id: str, region: str, role_name: str = None
+        self, account_id: str, region: str, role_name: Optional[str] = None
     ) -> boto3.client:
         """Get CloudFormation client for specific account and region."""
         try:
@@ -451,7 +453,7 @@ class AWSClient:
             )
 
     def _get_role_credentials(
-        self, account_id: str, role_name: str = None
+        self, account_id: str, role_name: Optional[str] = None
     ) -> Dict[str, str]:
         """Get temporary credentials by assuming a role via SSO."""
         self._ensure_authenticated()
@@ -474,7 +476,12 @@ class AWSClient:
                 roleName=role_name, accountId=account_id, accessToken=self.access_token
             )
 
-            return response["roleCredentials"]
+            credentials = response["roleCredentials"]
+            return {
+                "accessKeyId": credentials["accessKeyId"],
+                "secretAccessKey": credentials["secretAccessKey"],
+                "sessionToken": credentials["sessionToken"],
+            }
 
         except ClientError as e:
             if "UnauthorizedException" in str(e):
@@ -489,7 +496,9 @@ class AWSClient:
                 f"Failed to get credentials for account {account_id}: {str(e)}"
             )
 
-    def get_available_regions(self, accounts: List[Dict[str, str]] = None) -> List[str]:
+    def get_available_regions(
+        self, accounts: Optional[List[Dict[str, str]]] = None
+    ) -> List[str]:
         """Get list of available AWS regions."""
         try:
             console.print("[blue]Getting AWS regions...[/blue]")
