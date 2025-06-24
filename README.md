@@ -1,8 +1,8 @@
 # Haystack
 
-[![PyPI version](https://badge.fury.io/py/aws-haystack.svg)](https://badge.fury.io/py/aws-haystack)
+[![PyPI version](https://img.shields.io/pypi/v/aws-haystack.svg)](https://pypi.org/project/aws-haystack/)
 [![Python versions](https://img.shields.io/pypi/pyversions/aws-haystack.svg)](https://pypi.org/project/aws-haystack/)
-[![Downloads](https://img.shields.io/pypi/dm/aws-haystack)](https://pypi.org/project/aws-haystack/)
+[![Downloads](https://static.pepy.tech/badge/aws-haystack)](https://pepy.tech/project/aws-haystack)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Tests](https://github.com/niklas-palm/aws-haystack/actions/workflows/test.yml/badge.svg)](https://github.com/niklas-palm/aws-haystack/actions)
 
